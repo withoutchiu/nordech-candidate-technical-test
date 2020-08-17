@@ -4,15 +4,17 @@
 
 Help! a bunch of customers can't log in to our site! We need you to figure out why and fix it ASAP!
 
+These customers also need a bunch of univeristy data from an API.
+
 ### Task:
 
-For this task, you will need to look beyond the code and see what is stopping people from logging in to the site. Fix it so that everyone is 
-able to log in with the same email and password they are currently using and, if you have time, suggest some improvements to the code logic.
+For this task, you will need to look beyond the code and see what is stopping people from logging in to the site. Fix it so that everyone is able to log in with the same email and password they are currently using and, if you have time, suggest some improvements to the code logic. Secondly, can you consume an API and commit data to the database?
 
 ### Requirements:
 
 - PHP 7+
 - Mysql 8+
+- The API: `http://universities.hipolabs.com/`
 
 ### Setup:
 
