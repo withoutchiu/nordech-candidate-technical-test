@@ -1,8 +1,19 @@
-<?php 
+<?php
+/**
+ * If given a chance i will use a carbon date since i will be dealing with date, this could give me a
+ * better and much easier access with Dates. Since this does not have composer.json i cant
+ */
+
+/*
+ * Suggestion:
+ * 1.) Instead of using repeated if statement we can use switch to identify the error for logging in.
+ * 2.) repeated variable can be a functional scoped variables so we dont have to repeatedly declare it.
+ * 3.) If given a chance i will convert the whole project into PHP Laravel and avoid having inline php.
+ */
 session_start();
 // connect to database
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=nordech_challenge", "USERNAME", "PASSWORD", [
+    $pdo = new PDO("mysql:host=localhost;dbname=nordech_challenge", "root", "", [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                         PDO::ATTR_EMULATE_PREPARES => false,
@@ -26,6 +37,7 @@ function updateTable($pdo, $updateTable, $setKey, $setValue, $searchKey, $search
 
 }
 function doLogin($pdo) {
+
         $givenUser = getGivenUser($pdo);
         if(!$givenUser) {
             // no user found?
@@ -41,10 +53,21 @@ function doLogin($pdo) {
         }
         if($givenUser['passwordExpire'] < date("Y-m-d H:i:s")) {
             // Has the password expired?
-            $_SESSION['login_success'] = false;
-            $_SESSION['user_found'] = true;
-            return 6;
-        }        
+//            Using Laravel i can update the data using below
+//            $givenUser->update([
+//                    'passwordExpire' => date('Y-m-d', strtotime('+1 year', strtotime(date(Y-m-d))) )
+//            ]);
+            $newExpirationDate =  date('Y-m-d',strtotime(date("Y-m-d", mktime()) . " + 365 day"));
+            $updateSuccess = updateTable($pdo, 'Users', 'passwordExpire', $newExpirationDate, 'ID', $givenUser['ID']);
+            if($updateSuccess){
+                $_SESSION['login_success'] = true;
+                $_SESSION['user_found'] = true;
+            }else{
+                $_SESSION['login_success'] = false;
+                $_SESSION['user_found'] = true;
+                return 6;
+            }
+        }
         if($givenUser['lockedOut']===true) {
             // is user locked out?
             $_SESSION['login_success'] = false;
