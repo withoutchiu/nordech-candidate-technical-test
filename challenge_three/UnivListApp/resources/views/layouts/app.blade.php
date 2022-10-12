@@ -41,10 +41,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('univ-api.index') }}">{{ __('Process Api') }}</a>
                             </li>
-
-{{--                            <li class="nav-item">--}}
-{{--                                <a class="nav-link" href="{{ route('register') }}">{{ __('Add School') }}</a>--}}
-{{--                            </li>--}}
                     </ul>
                 </div>
             </div>
