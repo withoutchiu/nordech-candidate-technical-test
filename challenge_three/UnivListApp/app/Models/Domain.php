@@ -17,6 +17,9 @@ class Domain extends Model
      */
     protected $table = 'university_domains';
 
+    protected $fillable = ['domain'];
+
+
     /**
      * Get the university that owns the domain.
      */

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class WebPages extends Model
+class WebPage extends Model
 {
     use HasFactory, DatabaseTransactions;
 
@@ -21,6 +21,8 @@ class WebPages extends Model
      * @var string
      */
     protected $table = 'university_web_pages';
+
+    protected $fillable = ['url'];
 
     public function university(): BelongsTo
     {

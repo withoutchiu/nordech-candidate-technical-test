@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [Controller::class, 'index']);
+Route::get('/get-domain/{id}', [Controller::class, 'getDomain']);
+Route::get('/get-web-pages/{id}', [Controller::class, 'getWebPages']);
 
 
 /*

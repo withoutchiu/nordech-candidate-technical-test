@@ -19,4 +19,14 @@ class Controller extends BaseController
             'universities', $universities
         );
     }
+
+    public function getDomain($id){
+        $univ = University::findOrFail($id);
+        return response()->json($univ->domains);
+    }
+
+    public function getWebPages($id){
+        $univ = University::findOrFail($id);
+        return response()->json($univ->webpages);
+    }
 }

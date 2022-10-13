@@ -21,11 +21,11 @@ class University extends Model
 
     public function domains(): HasMany
     {
-        return $this->hasMany(Domain::class);
+        return $this->hasMany(Domain::class, 'university_id');
     }
 
     public function webPages(): HasMany
     {
-        return $this->hasMany(WebPages::class);
+        return $this->hasMany(WebPage::class);
     }
 }

@@ -8,7 +8,6 @@ use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Log;
 
 class ProcessApiController extends Controller
@@ -23,18 +22,35 @@ class ProcessApiController extends Controller
         $arrayKey = array("United States", "Canada");
 
         DB::beginTransaction();
+
         foreach ($arrayKey as $key){
             if(!University::where('country', rawurlencode($key))->first()){
                 try {
                         $response = Http::get('http://universities.hipolabs.com/search?country='.rawurlencode($key));
                         $universities = json_decode($response->body());
                         foreach ($universities as $univ){
-                            University::create([
+                            $university = University::create([
                                 'state-province' => $univ->{'state-province'},
                                 'alpha_two_code' => $univ->{'alpha_two_code'},
                                 'country' => $univ->country,
                                 'name' => $univ->name
                             ]);
+
+                            if(!empty($univ->domains)){
+                                foreach($univ->domains as $domain){
+                                    $university->domains()->create([
+                                        'domain' => $domain
+                                    ]);
+                                }
+                            }
+
+                            if(!empty($univ->web_pages)){
+                                foreach($univ->web_pages as $pages) {
+                                    $university->webPages()->create([
+                                        'url' => $pages
+                                    ]);
+                                }
+                            }
                             DB::commit();
                         }
                 }catch (ConnectException $e){
@@ -42,9 +58,8 @@ class ProcessApiController extends Controller
                     Log::error($e->getMessage());
                 }
             }
-            return redirect('/')->with('status', 'Api Successfully Run!');
         }
-
+        return response()->redirectTo('/')->with('status', 'API Successfully Run!');
     }
 
     /**
